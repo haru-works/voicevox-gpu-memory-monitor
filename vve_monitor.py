@@ -92,6 +92,7 @@ while True:
                 # プロセスあればフラグTrrue
                 process_exist_flg = True
                 # メモリ使用率計算
+                # memory.used / memory.total * 100
                 use_rate = round(int(gpu_info[3]) / int(gpu_info[1]),1) * 100
                 # 画面表示用
                 print(gpu_info[0] +
