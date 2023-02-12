@@ -7,11 +7,4 @@ GPUメモリ使用量が設定した閾値を超えたら、VOICEVOX Engineのru
 
 ※nvidiaのGPU用です。
 コマンド「nvidia-smi」が使える環境が前提です。
-
-下記のpythonライブラリが必要です。
-subprocess
-time
-io
-pandas
-psutil
-
+pandas、psutil、subprocess等のpythonライブラリが必要です。
