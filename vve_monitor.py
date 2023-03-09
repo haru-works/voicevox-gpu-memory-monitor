@@ -12,9 +12,9 @@ import psutil
 # 設定
 ##################################################
 # 実行コマンド ※環境によって変更する
-exe_path = "C:\\voicevox_engine\\0.14.2\\engine\\windows-directml\\run.exe --use_gpu"
+exe_path = "C:\\voicevox_engine\\0.14.3\\engine\\windows-directml\\run.exe --use_gpu"
 # メモリ仕使用率閾値　※環境によって変更する
-threshold = 70
+threshold = 80
 # インターバル(秒)　※環境によって変更する
 interval = 10.0
 # VOICEVOX EXE名
