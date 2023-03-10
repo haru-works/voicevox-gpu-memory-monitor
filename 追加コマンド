@@ -1,0 +1,6 @@
+ cd C:\voicevox_engine\voicevox-gpu-memory-monitor
+
+python service.py --startup install
+python service.py start
+python service.py stop
+python service.py remove
