@@ -22,6 +22,7 @@ import psutil
 ##################################################
 today = datetime.date.today()
 logging.basicConfig(
+    # ログ出力先　※環境によって変更する
     filename = 'C:\\voicevox_engine\\voicevox-gpu-memory-monitor\\log\\{}-app.log'.format(today.strftime('%Y%m%d')),
     level = logging.DEBUG,
     format="%(asctime)s:LINE[%(lineno)s] %(levelname)s %(message)s"
