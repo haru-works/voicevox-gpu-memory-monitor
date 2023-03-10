@@ -111,7 +111,7 @@ class PythonService(win32serviceutil.ServiceFramework):
         logging.info("-----------------------------------------------------------------------------")
         logging.info("VOICEVOX GPU memory monitoring service")
         logging.info("--description--")
-        logging.info(" GPU memory use rate" + str(self._threshold) + "% over VOICEVOX run.exe restart")
+        logging.info(" GPU memory use rate" + str(self._threshold) + "%over VOICEVOX run.exe restart")
         logging.info(" GPU memory use rate" + str(self._interval) + "sec intarvel monitoring")
         logging.info("-----------------------------------------------------------------------------")
         logging.info("--GPU info--")
