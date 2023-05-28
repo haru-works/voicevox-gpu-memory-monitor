@@ -39,7 +39,7 @@ class PythonService(win32serviceutil.ServiceFramework):
     # サービスの説明
     _svc_description_ = '一定周期でVoiceVox Engineで使っているGPUメモリを監視する'
     # 実行コマンド ※環境によって変更する
-    _exe_path = "C:\\voicevox_engine\\0.14.4\\windows-directml\\run.exe --use_gpu --host 192.168.50.222"
+    _exe_path = "C:\\voicevox_engine\\0.14.5\\windows-directml\\run.exe --use_gpu --host 192.168.50.222"
     # メモリ仕使用率閾値　※環境によって変更する
     _threshold = 90
     # インターバル(秒)　※環境によって変更する
