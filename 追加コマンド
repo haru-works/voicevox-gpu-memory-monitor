@@ -1,6 +1,14 @@
- cd C:\voicevox_engine\voicevox-gpu-memory-monitor
+cd C:\voicevox_engine\voicevox-gpu-memory-monitor
 
-python service.py --startup install
+旧バージョン
+python service.py install
 python service.py start
 python service.py stop
 python service.py remove
+
+マルチプロセス対応版
+cd C:\voicevox_engine\voicevox-gpu-memory-monitor
+python voicevox_engine_multi_process_service.py install
+python voicevox_engine_multi_process_service.py start
+python voicevox_engine_multi_process_service.py stop
+python voicevox_engine_multi_process_service.py remove
