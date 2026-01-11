@@ -39,17 +39,15 @@ class PythonService(win32serviceutil.ServiceFramework):
     # サービスの説明
     _svc_description_ = '一定周期でVoiceVox Engineで使っているGPUメモリを監視する'
     # 実行コマンド ※環境によって変更する
-    # _exe_path = "C:\\voicevox_engine\\0.14.7\\windows-directml\\run.exe --use_gpu --host 10.0.0.3"
-    _exe_path = ["C:\\voicevox_engine\\voicevox-gpu-memory-monitor\\vv1_gpu.bat",
-                 "C:\\voicevox_engine\\voicevox-gpu-memory-monitor\\vv2.bat",
-                 "C:\\voicevox_engine\\voicevox-gpu-memory-monitor\\vv3.bat"]
+    _exe_path = ["C:\\voicevox_engine\\voicevox-gpu-memory-monitor\\vv1_gpu.bat","C:\\voicevox_engine\\voicevox-gpu-memory-monitor\\vv2_cpu.bat","C:\\voicevox_engine\\voicevox-gpu-memory-monitor\\vv3_cpu.bat"]
+
     # VOICEVOX EXE名
     _exe_name_gpu = "run_gpu.exe"
     _exe_name_cpu = "run_cpu.exe"
     # メモリ仕使用率閾値　※環境によって変更する
-    _threshold = 90
+    _threshold = 95
     # インターバル(秒)　※環境によって変更する
-    _interval = 10.0
+    _interval = 5.0
     # CSV に出力するカラム一覧
     _keys = ["timestamp","memory.total","memory.free","memory.used"]
     # GPUスペック出力カラム一覧
@@ -133,9 +131,10 @@ class PythonService(win32serviceutil.ServiceFramework):
                 break            
             try:
                 time.sleep(self._interval)
-                # logging.info('service in progress')
+                logging.info('service in progress')
                 #プロセス存在フラグ初期化
-                process_exist_flg = False
+                process_exist_cpu_flg = False
+                process_exist_gpu_flg = False
                 #使用率初期化
                 use_rate = 0
                 # GPU の情報を取得
@@ -153,9 +152,14 @@ class PythonService(win32serviceutil.ServiceFramework):
                         cmd_line_str = ' '.join(cmdLine)
 
                         # 全プロセス存在チェック
-                        if(processName == self._exe_name_cpu or processName == self._exe_name_gpu):
-                            # どれか１つプロセスあればフラグ true
-                            process_exist_flg = True
+                        if(processName == self._exe_name_cpu):
+                            # CPUプロセスあればフラグ true
+                            process_exist_cpu_flg = True
+
+                        # 全プロセス存在チェック
+                        if(processName == self._exe_name_gpu):
+                            # GPUプロセスあればフラグ true
+                            process_exist_gpu_flg = True
 
                         # GPUプロセスメモリチェック
                         if(processName == self._exe_name_gpu):
@@ -189,16 +193,21 @@ class PythonService(win32serviceutil.ServiceFramework):
 
                                 #GPU版を再起動
                                 logging.info("gpu memory overflow ---> voicevox engine gpu restart " + self._exe_path[0])
-                                res_vve = subprocess.Popen(exe_path)
+                                subprocess.Popen(self._exe_path[0])
 
                     except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
                         pass
 
-                #全プロセスが存在しなかったらすべて起動する
-                if(process_exist_flg == False):
-                    for exe_path in self._exe_path:
-                        logging.info("voicevox engine process " + self._exe_name_gpu + "&"+ self._exe_name_cpu + " not found ---> start " + exe_path)
-                        res_vve = subprocess.Popen(exe_path)
+                #GPUプロセスが存在しなかったら起動する
+                if(process_exist_gpu_flg == False):
+                    logging.info("voicevox engine process " + self._exe_name_gpu + " not found ---> start " + self._exe_path[0])
+                    subprocess.Popen(self._exe_path[0])
+
+                #CPUプロセスが存在しなかったらすべて起動する
+                if(process_exist_cpu_flg == False):
+                    logging.info("voicevox engine process " + self._exe_name_cpu + " not found ---> start " + self._exe_path[1])
+                    subprocess.Popen(self._exe_path[1])
+                    subprocess.Popen(self._exe_path[2])
 
             except Exception as e:
                 logging.error("Error occured.")
